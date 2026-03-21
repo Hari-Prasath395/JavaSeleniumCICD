@@ -1,0 +1,5 @@
+base\BasePage.class
+base\BaseTestPlaceholder.class
+pages\LoginPage.class
+utils\ExtentManager.class
+utils\Utilities.class
