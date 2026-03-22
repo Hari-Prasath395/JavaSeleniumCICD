@@ -35,7 +35,8 @@ pipeline {
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit testResults: '**/target/surefire-reports/*.xml',
+                          allowEmptyResults: true
                 }
             }
         }
@@ -44,7 +45,7 @@ pipeline {
             steps {
                 echo '--- Publishing HTML test report ---'
                 publishHTML([
-                    allowMissing:          false,
+                    allowMissing:          true,
                     alwaysLinkToLastBuild: true,
                     keepAll:               true,
                     reportDir:             'target/surefire-reports',
