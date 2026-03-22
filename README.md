@@ -17,6 +17,16 @@ How to run:
 mvn -Dtest=tests.LoginTest test
 ```
 
+Headless (CI) behavior:
+- When running in CI (Jenkins) the framework automatically enables headless Chrome by detecting common CI env vars (e.g. JENKINS_HOME, BUILD_ID, CI).
+- You can force headless locally by setting the environment variable HEADLESS=true before running tests.
+  Example (Windows cmd.exe):
+
+```cmd
+set HEADLESS=true
+mvn -Dtest=tests.LoginTest test
+```
+
 Detailed steps and troubleshooting:
 - Ensure `JAVA_HOME` points to a JDK (java -version should report a JDK 21+).
 - Ensure `mvn` is on your PATH (run `mvn -version`). If it's not, install Maven: https://maven.apache.org/install.html

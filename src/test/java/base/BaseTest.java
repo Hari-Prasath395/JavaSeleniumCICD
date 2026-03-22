@@ -42,9 +42,31 @@ public class BaseTest {
             // so Selenium Manager (bundled with Selenium 4.14+) can resolve the matching driver.
             System.clearProperty("webdriver.chrome.driver");
             ChromeOptions options = new ChromeOptions();
-            // uncomment if you want headless runs
-            // options.addArguments("--headless=new");
+
+            // Determine if we should run headless:
+            // - allow explicit opt-in with HEADLESS=true
+            // - automatically enable for CI/Jenkins when JENKINS_HOME or BUILD_ID is present
+            boolean envHeadless = "true".equalsIgnoreCase(System.getenv("HEADLESS"));
+            boolean isJenkins = System.getenv("JENKINS_HOME") != null || System.getenv("BUILD_ID") != null
+                    || System.getenv("CI") != null;
+            boolean headless = envHeadless || isJenkins;
+
+            if (headless) {
+                // Use the new headless mode flag supported by modern Chrome
+                options.addArguments("--headless=new");
+                // Common flags for running in containers/CI
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--disable-gpu");
+                options.addArguments("--window-size=1920,1080");
+                test.info("Configured Chrome to run in headless CI mode");
+            } else {
+                test.info("Configured Chrome to run with UI (non-headless)");
+            }
+
+            // allow remote origins (keeps existing behavior)
             options.addArguments("--remote-allow-origins=*");
+
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
