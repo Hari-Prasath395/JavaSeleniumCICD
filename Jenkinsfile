@@ -16,21 +16,21 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo '--- Cloning latest code from GitHub ---'
+                echo 'Cloning latest code from GitHub'
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo '--- Compiling project with Maven ---'
+                echo 'Compiling project with Maven'
                 bat 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                echo '--- Executing Selenium test suite ---'
+                echo 'Executing Selenium test suite'
                 bat 'mvn test'
             }
             post {
@@ -43,7 +43,7 @@ pipeline {
 
         stage('Publish Report') {
             steps {
-                echo '--- Publishing HTML test report ---'
+                echo 'Publishing HTML test report'
                 publishHTML([
                     allowMissing:          true,
                     alwaysLinkToLastBuild: true,
@@ -57,9 +57,8 @@ pipeline {
     }
 
     post {
-        success { echo 'BUILD PASSED — All Selenium tests green!' }
-        failure { echo 'BUILD FAILED — Check console output.' }
+        success { echo 'BUILD PASSED' }
+        failure { echo 'BUILD FAILED' }
         always  { cleanWs() }
-    }s
+    }
 }
-
