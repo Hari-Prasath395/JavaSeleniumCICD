@@ -60,5 +60,6 @@ pipeline {
         success { echo 'BUILD PASSED — All Selenium tests green!' }
         failure { echo 'BUILD FAILED — Check console output.' }
         always  { cleanWs() }
-    }
+    }s
 }
+
